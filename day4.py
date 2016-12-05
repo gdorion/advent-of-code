@@ -8,26 +8,15 @@ def validate(string, checksum):
         if c in s_registry.keys():
             s_registry[c] = s_registry[c] + 1
         else:
-            s_registry[c] = 0
+            s_registry[c] = 1
 
-    sorted_s = sorted(s_registry.items(), key=operator.itemgetter(1), reverse=True)
-
-    # print s_registry
-    print sorted_s
-    print checksum
-
+    sorted_s = [v for v in sorted(s_registry.iteritems(), key=lambda(k, v): (-v, k))]
+    
     for i in range(len(checksum)):
-        if sorted_s[i][0] != checksum[i]:
-            for j in xrange(0, len(checksum)):
-                if sorted_s[i] == sorted_s[j]:
-                    foundEquivalent = True
-                    break
-
-            if foundEquivalent:
-                return True
-
+        checksumLetter = checksum[i]
+        roomLetter = sorted_s[i][0]
+        if checksumLetter != roomLetter:
             return False
-
     return True
 
 sum = 0
