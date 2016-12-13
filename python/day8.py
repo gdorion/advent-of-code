@@ -5,6 +5,7 @@
 # Author : Guillaume Dorion
 # Email  : gdorion@gmail.com
 #
+
 board_width = 50
 board_height = 6
 board = [][]
@@ -16,8 +17,8 @@ for x in range(len(board_width)):
 with open('day8.txt') as f:
     for line in f:
         if 'rect' in line:
-            a = int(line.split(' ')[1].split('x')[0])
-            b = int(line.split('x')[1])
+            a = int(line.split(' ')[1].split('x')[0]) #width
+            b = int(line.split('x')[1]) #height
 
             for x in range(len(a)):
                 for y in range(len(b)):
@@ -28,9 +29,18 @@ with open('day8.txt') as f:
             b = line.split(' ')[4] #value
 
             for y in range(len(b))):
-                # todo !
-                # board[a][y] = 1
+                if y == 0:
+                    board[a][y] = board[a][board_height-1]
+                else:
+                    board[a][y] = board[a][y-1]
+
 
         elif 'rotate column' in line:
-            a = line.split(' ')[2].split('=')[1]
-            b = line.split(' ')[4]
+            a = line.split(' ')[2].split('=')[1] #row
+            b = line.split(' ')[4] #val
+
+            for x in range(len(b))):
+                if x == 0:
+                    board[a][x] = board[a][board_width-1]
+                else:
+                    board[a][x] = board[a][x-1]
