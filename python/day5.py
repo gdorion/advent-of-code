@@ -9,6 +9,9 @@
 import md5
 import hashlib
 
+import time
+start_time = time.time()
+
 secretKey = 'ugkcyxxp'
 possibleValue = 0
 evaluatedValue = None
@@ -54,3 +57,5 @@ while(1):
     i = i + 1
 
 print "".join(r)
+
+print("--- %s seconds ---" % (time.time() - start_time))
