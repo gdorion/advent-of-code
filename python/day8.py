@@ -5,42 +5,71 @@
 # Author : Guillaume Dorion
 # Email  : gdorion@gmail.com
 #
+# For answer in part 2 : look in screen about
+    #  upojflbcez
+from copy import deepcopy
 
-board_width = 50
-board_height = 6
-board = [][]
-for x in range(len(board_width)):
-    for y in range(len(board_height)):
-        board[x][y] = 0
+numberRow = 6
+numberCol = 50
 
-# with open('day7TestInput2.txt') as f:
+matrix = []
+for i in range(0,numberRow):
+    row = []
+    for j in range(0,numberCol):
+        row.append(0)
+    matrix.append(row)
+
+def printMatrix(matrix):
+    for row in matrix:
+        print str(row) + "\n"
+
+def getOffset(initial, offset, total):
+    result = initial
+    for i in range(offset):
+        result = result - 1
+        if result < 0:
+            result = total - 1
+    return result
+
 with open('day8.txt') as f:
+# with open('day8Test.txt') as f:
     for line in f:
+        copy = []
         if 'rect' in line:
             a = int(line.split(' ')[1].split('x')[0]) #width
-            b = int(line.split('x')[1]) #height
+            b = int(line.split(' ')[1].split('x')[1]) #height
 
-            for x in range(len(a)):
-                for y in range(len(b)):
-                    board[x][y] = 1
+            for x in range(b):
+                for y in range(a):
+                    matrix[x][y] = 1
 
-        elif 'rotate row' in line:
-            a = line.split(' ')[2].split('=')[1] #col
-            b = line.split(' ')[4] #value
-
-            for y in range(len(b))):
-                if y == 0:
-                    board[a][y] = board[a][board_height-1]
-                else:
-                    board[a][y] = board[a][y-1]
-
+            # printMatrix(matrix)
 
         elif 'rotate column' in line:
-            a = line.split(' ')[2].split('=')[1] #row
-            b = line.split(' ')[4] #val
+            col = int(line.split(' ')[2].split('=')[1]) #col
+            val = int(line.split(' ')[4]) #val
 
-            for x in range(len(b))):
-                if x == 0:
-                    board[a][x] = board[a][board_width-1]
-                else:
-                    board[a][x] = board[a][x-1]
+            copy = deepcopy(matrix)
+            for row in range(numberRow):
+                offset = getOffset(row, val, numberRow)
+                matrix[row][col] = copy[offset][col]
+
+            # printMatrix(matrix)
+
+        elif 'rotate row' in line:
+            row = int(line.split(' ')[2].split('=')[1]) #row
+            val = int(line.split(' ')[4]) #val
+
+            copy = deepcopy(matrix)
+            for col in range(numberCol):
+                offset = getOffset(col, val, numberCol)
+                matrix[row][col] = copy[row][offset]
+
+            # printMatrix(matrix)
+printMatrix(matrix)
+lightsCount = 0
+for i in range(0,numberRow) :
+    for j in range(0,numberCol):
+        if matrix[i][j] == 1:
+            lightsCount = lightsCount + 1
+print lightsCount
